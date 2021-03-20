@@ -1,0 +1,36 @@
+
+version: '3.1'
+
+services:
+  mongodb:
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=uatdb
+    - MONGO_INITDB_ROOT_PASSWORD=uatdb123
+    volumes:
+    - mydata:/data/db
+    networks:
+    - ebay
+    image: mongo
+
+  springapp:
+    ports:
+    - 8000:8080
+    environment:
+    - MONGO_DB_HOSTNAME=mongodb
+    - MONGO_DB_USERNAME=uatdb
+    - MONGO_DB_PASSWORD=uatdb123
+    networks:
+    - ebay
+    image: mylandmarktech/myapp:6
+
+volumes:
+  mydata:
+    driver: rexray/ebs
+networks:
+  ebay:
+    external: true
+
+
+depend_on   (option to indicate that springapp depend on mongodb enter this option after image in springapp)
+- mongodb
+
